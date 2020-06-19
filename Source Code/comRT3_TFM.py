@@ -152,6 +152,16 @@ def sendCommand(RT3_address, RT3_sock, command):
 
         return data.decode("utf-8")
 
+def closeCOM(RT3_address, RT3_sock,commands):
+
+    data = sendCommand(RT3_address, RT3_sock, commands.cntloff)
+    time.sleep(0.50)
+
+    RT3_sock.shutdown(socket.SHUT_RDWR)
+    RT3_sock.close()
+
+    return
+
 def alarmHandling(RT3_address, RT3_sock, commands, data):
 
         #Reset Error Alarm

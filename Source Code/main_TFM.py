@@ -74,7 +74,7 @@ command = []
 print("Robot connected, finding board...")
 
 
-webcam, im_msg, str_msg, board_coord, grid, center = initCamera(0,0)   #Online images
+webcam, im_msg, str_msg, board_coord, grid, center = initCamera(0,0,RT3_address, RT3_sock,commands)   #Online images
 #webcam, im_msg, str_msg, board_coord, grid, center = loadCAMBoard(0,0)  #Offlines images
 
 DataTransmission(SockData,robotCOM,msg.encode('utf-8'))
@@ -107,7 +107,7 @@ while not board.is_game_over():
             print('\n')
 
 
-            img = getBoardPiecesIMG(webcam, ang, board_coord, engine)
+            img = getBoardPiecesIMG(webcam, ang, board_coord, engine, RT3_address, RT3_sock,commands)
             grid = dividedBoard(img, board_coord.angle, grid, center, vgg_dim, display)
 
             print("Predicting board...\n")
@@ -117,7 +117,7 @@ while not board.is_game_over():
                 board, move_pl, info, legal_move = playUser(board, engine, str_board, legal_move, grid, vggmodel)
             except Exception as e:
                 print(e)
-                destSocket.close()
+                closeCOM(RT3_address, RT3_sock, commands)
                 engine.quit()
                 sys.exit()
 
@@ -181,6 +181,6 @@ while not board.is_game_over():
 
 input("Endgame")
 
-destSocket.close()
+closeCOM(RT3_address, RT3_sock,commands)
 engine.quit()
 sys.exit()

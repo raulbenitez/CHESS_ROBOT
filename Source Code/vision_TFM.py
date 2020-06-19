@@ -8,6 +8,8 @@ from matplotlib import pyplot as plt
 
 from tensorflow.keras.preprocessing import image
 
+from comRT3_TFM import *
+
 labels = ['h','g','f','e','d','c','b','a']
 str_coord = "1,0,0,0,0,100,100,0,100,100"
 vgg_dim = (224,224)
@@ -34,7 +36,7 @@ def cls():    #Clear screen
     else:
         _ = system('clear')
 
-def initCamera(device, ang):
+def initCamera(device, ang, RT3_address, RT3_sock,commands):
 
 
     print("Connecting with the camera...")
@@ -77,6 +79,7 @@ def initCamera(device, ang):
                 break
             elif k == 27:
                 exit = True
+                closeCOM(RT3_address, RT3_sock,commands)
                 cv2.destroyAllWindows()
                 sys.exit()
 
@@ -107,7 +110,7 @@ def loadCAMBoard(device, ang):
 
     return webcam, im_msg, str_msg, board, grid, center
 
-def getBoardPiecesIMG(webcam, ang, board, engine):
+def getBoardPiecesIMG(webcam, ang, board, engine, RT3_address, RT3_sock,commands):
 
     if webcam.isOpened():
 
@@ -129,6 +132,7 @@ def getBoardPiecesIMG(webcam, ang, board, engine):
                     break
                 elif k == 27:
                     exit = True
+                    closeCOM(RT3_address, RT3_sock,commands)
                     cv2.destroyAllWindows()
                     engine.quit()
                     sys.exit()
@@ -138,6 +142,7 @@ def getBoardPiecesIMG(webcam, ang, board, engine):
         cv2.destroyAllWindows()
         print("Camera conenction error!")
         exit = True
+        closeCOM(RT3_address, RT3_sock,commands)
         engine.quit()
         sys.exit()
 
