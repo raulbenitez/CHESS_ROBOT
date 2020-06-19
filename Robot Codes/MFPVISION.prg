@@ -61,124 +61,122 @@
 61     MFPVsTrigger_Board = 1
 62 '
 63 FEnd
-64 'Function M! MFPVsTrigger_Play(MVsNum, ByRef MNumberFound, ByRef PVSDATA)
-65 'FEnd
-66 '
-67 '##### COM Open process #####
-68 'Input:MVsNum=Vision number
-69 '      CCCOM$=Communication port number
-70 'Return Value:Error Status(1:no Error, -1:Open Error, -2:File number Error)
-71 Function M! MFPVSOpen(MVsNum, CCCOM$)
-72   If M_Open(MVsNum)<>1 Then
-73     Select MVsNum
-74     Case 1
-75       Open CCCOM$ As #1
-76       Break
-77     Case 2
-78       Open CCCOM$ As #2
-79       Break
-80     Case 3
-81       Open CCCOM$ As #3
-82       Break
-83     Case 4
-84       Open CCCOM$ As #4
-85       Break
-86     Case 5
-87       Open CCCOM$ As #5
-88       Break
-89     Case 6
-90       Open CCCOM$ As #6
-91       Break
-92     Case 7
-93       Open CCCOM$ As #7
-94       Break
-95     Default
-96       MFPVSOpen=-2
-97       Exit Function
-98     End Select
-99   EndIf
-100   '
-101   MFPVSOpen=M_NvOpen(MVsNum)
-102 FEnd
-103 '
-104 '
-105 '##### COM Close process #####
-106 'Input:MVsNum=Vision number
-107 'Return Value:Error Status(1:no Error, -1:Close Error, -2:File number Error)
-108 Function M! MFPVSClose(MVsNum)
-109   Select MVsNum
-110   Case 1
-111     Close #1
-112     Break
-113   Case 2
-114     Close #2
-115     Break
-116   Case 3
-117     Close #3
-118     Break
-119   Case 4
-120     Close #4
-121     Break
-122   Case 5
-123     Close #5
-124     Break
-125   Case 6
-126     Close #6
-127     Break
-128   Case 7
-129     Close #7
-130     Break
-131   Default
-132     MFPVSClose=-2
-133     Exit Function
-134   End Select
-135   '
-136   If M_Open(MVsNum)=1 Then
-137     MFPVSClose=-1
-138     Exit Function
-139   EndIf
-140   MFPVSClose=1
-141 FEnd
-142 '
-143 ''##### Alignment process #####
-144 Function P MFPVsAlignHandCamT(MVsNum, PVSDATA, PTrg_Board, ByRef MErrSt)
-145     'Change Coordinates
-146         PVSDATA2=PVSCal(1,PVSDATA.X,PVSDATA.Y,PVSDATA.C)
-147         MTCVSD_X#=PF_TCVSD(MVsNum).X
-148         MTCVSD_Y#=PF_TCVSD(MVsNum).Y
-149         MTCVSD_C#=PF_TCVSD(MVsNum).C
-150         PTCVSD=PVSCal(1,MTCVSD_X#,MTCVSD_Y#,MTCVSD_C#)
-151     'Calculate alignment position
-152         PDest=P_Zero
-153         PShift = Inv(PTCVSD)*Inv(PF_VsTrigPosBs(MVsNum))*PF_VsOpePosTBs(MVsNum)
-154         PDest = PTrg_Board*PVSDATA2*PShift
-155         PDest.FL1=PTrg_Board.FL1
-156         PDest.FL2=PTrg_Board.FL2
-157      '
-158         MFPVsAlignHandCamT = PDest
-159 FEnd
+64 '
+65 '##### COM Open process #####
+66 'Input:MVsNum=Vision number
+67 '      CCCOM$=Communication port number
+68 'Return Value:Error Status(1:no Error, -1:Open Error, -2:File number Error)
+69 Function M! MFPVSOpen(MVsNum, CCCOM$)
+70   If M_Open(MVsNum)<>1 Then
+71     Select MVsNum
+72     Case 1
+73       Open CCCOM$ As #1
+74       Break
+75     Case 2
+76       Open CCCOM$ As #2
+77       Break
+78     Case 3
+79       Open CCCOM$ As #3
+80       Break
+81     Case 4
+82       Open CCCOM$ As #4
+83       Break
+84     Case 5
+85       Open CCCOM$ As #5
+86       Break
+87     Case 6
+88       Open CCCOM$ As #6
+89       Break
+90     Case 7
+91       Open CCCOM$ As #7
+92       Break
+93     Default
+94       MFPVSOpen=-2
+95       Exit Function
+96     End Select
+97   EndIf
+98   '
+99   MFPVSOpen=M_NvOpen(MVsNum)
+100 FEnd
+101 '
+102 '
+103 '##### COM Close process #####
+104 'Input:MVsNum=Vision number
+105 'Return Value:Error Status(1:no Error, -1:Close Error, -2:File number Error)
+106 Function M! MFPVSClose(MVsNum)
+107   Select MVsNum
+108   Case 1
+109     Close #1
+110     Break
+111   Case 2
+112     Close #2
+113     Break
+114   Case 3
+115     Close #3
+116     Break
+117   Case 4
+118     Close #4
+119     Break
+120   Case 5
+121     Close #5
+122     Break
+123   Case 6
+124     Close #6
+125     Break
+126   Case 7
+127     Close #7
+128     Break
+129   Default
+130     MFPVSClose=-2
+131     Exit Function
+132   End Select
+133   '
+134   If M_Open(MVsNum)=1 Then
+135     MFPVSClose=-1
+136     Exit Function
+137   EndIf
+138   MFPVSClose=1
+139 FEnd
+140 '
+141 ''##### Alignment process #####
+142 Function P MFPVsAlignHandCamT(MVsNum, PVSDATA, PTrg_Board, ByRef MErrSt)
+143     'Change Coordinates
+144         PVSDATA2=PVSCal(1,PVSDATA.X,PVSDATA.Y,PVSDATA.C)
+145         MTCVSD_X#=PF_TCVSD(MVsNum).X
+146         MTCVSD_Y#=PF_TCVSD(MVsNum).Y
+147         MTCVSD_C#=PF_TCVSD(MVsNum).C
+148         PTCVSD=PVSCal(1,MTCVSD_X#,MTCVSD_Y#,MTCVSD_C#)
+149     'Calculate alignment position
+150         PDest=P_Zero
+151         PShift = Inv(PTCVSD)*Inv(PF_VsTrigPosBs(MVsNum))*PF_VsOpePosTBs(MVsNum)
+152         PDest = PTrg_Board*PVSDATA2*PShift
+153         PDest.FL1=PTrg_Board.FL1
+154         PDest.FL2=PTrg_Board.FL2
+155      '
+156         MFPVsAlignHandCamT = PDest
+157 FEnd
+158 '
+159 Function P MFTPAlignEdge(MCalib,PVSDATA,PRef)
 160 '
-161 Function P MFTPAlignEdge(MCalib,PVSDATA,PRef)
-162 '
-163         PDest = P_Zero
-164         PDest = PVSCal(MCalib,PVSDATA.X,PVSDATA.Y,PVSDATA.C)                        'Calculate alignment position for P2
-165         PDest.Z = PRef.Z
-166         PDest.A = PRef.A
-167         PDest.B = PRef.B
-168         PDest.C = PRef.C
-169         PDest.FL1 = PRef.FL1
-170         PDest.FL2 = PRef.FL2
-171         MFTPAlignEdge = PDest
-172 '
-173 FEnd
-174 Function V MFPTrainVsBaseHndCam(MVsNum, PTCVSD, PVsTrgPos, PBaseOpePosT)
-175 '
-176   PF_TCVSD(MVsNum)=PTCVSD
-177   PF_VsTrigPosBs(MVsNum)=PVsTrgPos
-178   PF_VsOpePosTBs(MVsNum)=PBaseOpePosT
-179   Save 0
-180 '
-181 FEnd
+161         PDest = P_Zero
+162         PDest = PVSCal(MCalib,PVSDATA.X,PVSDATA.Y,PVSDATA.C)                        'Calculate alignment position for P2
+163         PDest.Z = PRef.Z
+164         PDest.A = PRef.A
+165         PDest.B = PRef.B
+166         PDest.C = PRef.C
+167         PDest.FL1 = PRef.FL1
+168         PDest.FL2 = PRef.FL2
+169         MFTPAlignEdge = PDest
+170 '
+171 FEnd
+172 Function V MFPTrainVsBaseHndCam(MVsNum, PTCVSD, PVsTrgPos, PBaseOpePosT)
+173 '
+174   PF_TCVSD(MVsNum)=PTCVSD
+175   PF_VsTrigPosBs(MVsNum)=PVsTrgPos
+176   PF_VsOpePosTBs(MVsNum)=PBaseOpePosT
+177   Save 0
+178 '
+179 FEnd
 PVs(1,1)=(+106.00,+618.00,+0.00,+0.00,+0.00,+0.12,+0.00,+0.00)(0,0)
 PVs(1,2)=(+598.00,+619.00,+0.00,+0.00,+0.00,+0.00,+0.00,+0.00)(0,0)
 PVs(1,3)=(+107.00,+124.00,+0.00,+0.00,+0.00,+0.00,+0.00,+0.00)(0,0)

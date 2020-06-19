@@ -15,7 +15,7 @@
 15 Const Dim CVsCOM$(7)
 16 Const CVsCOM$(1)="COM2:"                                    'Set communication port name For vision
 17 '
-18 Function M! MFPVsTrigger_Play(MVsNum, ModePlay, ByRef MPick, ByRef MPut, ByRef MTurn)
+18 Function M! MFPVsTrigger_Play(MVsNum, ModePlay, ByRef MPick, ByRef MPut, ByRef MTurn, ByRef MEnd)
 19 '
 20     Print #1,CDVsCmdMode$(ModePlay)                                    'Select Mode Play
 21     Input #1,MTurn,MPick,MPut,MCKPC,MCKMT         'Get Play: Turn + Pick Pose + Drop Pose + Check If there Is a piece on Drop pose + Check If checkmate
@@ -25,7 +25,7 @@
 25         MFPVsTrigger_Play = -2
 26     EndIf
 27     'Check If Checkmate
-28     If MCKMT = 1 Then MFPVsTrigger_Play = 3
+28     If MCKMT = 1 Then MEnd = 1 Else MEnd = 0
 29     'Check If There is a piece in objective place
 30     If MCKPC = 1 Then
 31         MFPVsTrigger_Play = 2
